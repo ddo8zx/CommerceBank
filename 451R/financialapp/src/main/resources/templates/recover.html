@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Recover Account</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container mt-5">
+    <div class="col-md-6 offset-md-3">
+        <h2 class="mb-4 text-center">Recover Account</h2>
+
+        <form th:action="@{/recover}" method="post">
+            <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+            <div th:if="${userFound}">
+                <p><strong>Security Question:</strong> <span th:text="${securityQuestion}"></span></p>
+                <input type="hidden" name="email" th:value="${email}"/>
+                <div class="mb-3">
+                    <label class="form-label">Your Answer</label>
+                    <input type="text" name="securityAnswer" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Submit Answer</button>
+            </div>
+            <div th:if="${!userFound}">
+                <div class="mb-3">
+                    <label class="form-label">Enter your email</label>
+                    <input type="email" name="email" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Find Account</button>
+            </div>
+        </form>
+
+        <div th:if="${recoveredUser != null}">
+            <hr>
+            <h4>Account Info:</h4>
+            <p><strong>Username:</strong> <span th:text="${recoveredUser.username}"></span></p>
+            <p><strong>Password:</strong> <span th:text="${recoveredUser.password}"></span></p>
+
+            <div class="mt-3 text-center">
+                <a class="btn btn-outline-primary" th:href="@{/login}">Return to Login</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
