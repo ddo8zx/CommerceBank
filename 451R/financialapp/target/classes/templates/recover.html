@@ -41,5 +41,34 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const body = document.body;
+        const cards = document.querySelectorAll('.card');
+
+        function enableDarkMode() {
+            body.classList.add('bg-dark', 'text-light');
+            cards.forEach(card => {
+                card.classList.remove('bg-white');
+                card.classList.add('bg-secondary', 'text-light');
+            });
+        }
+
+        function disableDarkMode() {
+            body.classList.remove('bg-dark', 'text-light');
+            cards.forEach(card => {
+                card.classList.add('bg-white');
+                card.classList.remove('bg-secondary', 'text-light');
+            });
+        }
+
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            enableDarkMode();
+        } else {
+            disableDarkMode();
+        }
+    });
+</script>
 </body>
 </html>

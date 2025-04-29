@@ -121,6 +121,45 @@ public class UserController {
         return "redirect:/login";  // Send back to login page
     }
 
+    @PostMapping("/profile/change-password")
+    public String changePassword(@RequestParam String currentPassword,
+                                 @RequestParam String newPassword,
+                                 HttpSession session,
+                                 Model model) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+
+        if (loggedInUser == null) {
+            return "redirect:/login";
+        }
+
+        // Check if the current password matches
+        if (!loggedInUser.getPassword().equals(currentPassword)) {
+            model.addAttribute("error", "Current password is incorrect.");
+            model.addAttribute("user", loggedInUser);
+            return "profile";
+        }
+
+        // Update the password
+        loggedInUser.setPassword(newPassword);
+        userRepository.save(loggedInUser);
+
+        model.addAttribute("message", "Password updated successfully.");
+        model.addAttribute("user", loggedInUser);
+        return "profile";
+    }
+
+    @GetMapping("/profile")
+    public String showProfile(Model model, HttpSession session) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+
+        if (loggedInUser == null) {
+            return "redirect:/login";
+        }
+
+        model.addAttribute("user", loggedInUser);
+        return "profile";
+    }
+
 
 
 }
