@@ -12,18 +12,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.YearMonth;
-
-
 import java.util.List;
 
 @Controller
-public class SavingsController {
+public class SavingsController { // controls logic for savings/budget page
 
     @Autowired
-    private ExpenseRepository expenseRepository;
+    private ExpenseRepository expenseRepository; // connects to expense repository
 
     @Autowired
-    private SavingsGoalRepository savingsGoalRepository;
+    private SavingsGoalRepository savingsGoalRepository; // connects to savings repository
 
     @GetMapping("/savings")
     public String showSavingsPage(Model model, HttpSession session) {
@@ -42,7 +40,7 @@ public class SavingsController {
             };
             YearMonth currentMonth = YearMonth.now();
 
-            // 🧮 Calculate expenses
+            // calculate expenses
             List<Expense> expenses = expenseRepository.findAll().stream()
                     .filter(e -> e.getUser() != null && e.getUser().getId().equals(user.getId()))
                     .filter(e -> {

@@ -10,7 +10,6 @@ public class SavingsGoal {
     private Long id;
 
     private double monthlyBudget;
-
     private double housing;
     private double food;
     private double transportation;
@@ -22,8 +21,7 @@ public class SavingsGoal {
     @JoinColumn(name = "user_id", unique = true)
     private User user;
 
-    // Getters and setters
-
+    // getters and setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

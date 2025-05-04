@@ -6,25 +6,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
 import org.springframework.web.bind.annotation.PathVariable;
-
 import jakarta.servlet.http.HttpSession;
 import com.example.financialapp.models.User;
 
-
-
-
 @Controller
-public class ExpenseController {
+public class ExpenseController { // controls logic from expense page
 
     @Autowired
-    private ExpenseRepository expenseRepository;
+    private ExpenseRepository expenseRepository; //connects to expense repository
 
     @GetMapping("/expenses")
     public String showExpenses(Model model, HttpSession session) {
@@ -41,7 +35,7 @@ public class ExpenseController {
         model.addAttribute("expenses", expenses);
         model.addAttribute("expense", new Expense());
 
-        // 🔢 Calculate category counts
+        // calculates category counts
         Map<String, Long> categoryCounts = expenses.stream()
                 .collect(Collectors.groupingBy(Expense::getCategory, Collectors.counting()));
         model.addAttribute("categoryCounts", categoryCounts);
@@ -57,29 +51,28 @@ public class ExpenseController {
     @PostMapping("/expenses")
     public String addExpense(@ModelAttribute Expense expense, HttpSession session) {
 
-        // Use today's date if not provided
+        // use today's date if not provided
         if (expense.getDate() == null) {
             expense.setDate(LocalDate.now());
         }
-        // Get logged-in user from session
+        // gets logged-in user from session
         User loggedInUser = (User) session.getAttribute("loggedInUser");
 
-// If somehow no user is found, redirect to login
+        // if somehow no user is found, redirect to login
         if (loggedInUser == null) {
             return "redirect:/login";
         }
 
-// Link the expense to the user
+        // links the expense to the user
         expense.setUser(loggedInUser);
 
         expenseRepository.save(expense);
         return "redirect:/expenses";
     }
 
-    @PostMapping("/expenses/delete/{id}")
+    @PostMapping("/expenses/delete/{id}") // allows deletion of expense
     public String deleteExpense(@PathVariable Long id) {
         expenseRepository.deleteById(id);
         return "redirect:/expenses";
     }
-
 }

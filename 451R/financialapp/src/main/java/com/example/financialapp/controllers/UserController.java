@@ -8,12 +8,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpSession;
 
-
 @Controller
-public class UserController {
+public class UserController { // controls user logic
 
     @Autowired
-    private UserRepository userRepository;
+    private UserRepository userRepository; // connects to user repository
 
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
@@ -56,13 +55,12 @@ public class UserController {
             return "login";
         }
 
-        // ✅ Save user in session for later pages
+        // save user in session for later pages
         session.setAttribute("loggedInUser", user);
 
         model.addAttribute("username", user.getUsername());
         return "redirect:/dashboard";
     }
-
 
     @GetMapping("/dashboard")
     public String showDashboard(Model model, HttpSession session) {
@@ -75,7 +73,6 @@ public class UserController {
         model.addAttribute("username", loggedInUser.getUsername());
         return "dashboard";
     }
-
 
     @GetMapping("/recover")
     public String showRecoveryPage(Model model) {
@@ -96,7 +93,7 @@ public class UserController {
         }
 
         if (securityAnswer == null) {
-            // Phase 1: Show security question
+            // phase 1: show security question
             model.addAttribute("email", email);
             model.addAttribute("securityQuestion", user.getSecurityQuestion());
             model.addAttribute("userFound", true);
@@ -104,7 +101,7 @@ public class UserController {
         }
 
         if (user.getSecurityAnswer().equalsIgnoreCase(securityAnswer.trim())) {
-            // Phase 2: Correct answer, show credentials
+            // phase 2: correct answer, show credentials
             model.addAttribute("recoveredUser", user);
         } else {
             model.addAttribute("error", "Incorrect answer. Please try again.");
@@ -117,8 +114,8 @@ public class UserController {
     }
     @GetMapping("/logout")
     public String logout(HttpSession session) {
-        session.invalidate();  // Kill the session
-        return "redirect:/login";  // Send back to login page
+        session.invalidate();  // kill the session
+        return "redirect:/login";  // send back to login page
     }
 
     @PostMapping("/profile/change-password")
@@ -132,14 +129,14 @@ public class UserController {
             return "redirect:/login";
         }
 
-        // Check if the current password matches
+        // check if the current password matches
         if (!loggedInUser.getPassword().equals(currentPassword)) {
             model.addAttribute("error", "Current password is incorrect.");
             model.addAttribute("user", loggedInUser);
             return "profile";
         }
 
-        // Update the password
+        // update the password
         loggedInUser.setPassword(newPassword);
         userRepository.save(loggedInUser);
 
@@ -159,9 +156,6 @@ public class UserController {
         model.addAttribute("user", loggedInUser);
         return "profile";
     }
-
-
-
 }
 
 

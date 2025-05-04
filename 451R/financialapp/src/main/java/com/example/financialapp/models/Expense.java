@@ -21,7 +21,7 @@ public class Expense {
     @JoinColumn(name = "user_id")
     private User user;
 
-    // Constructors
+    // constructors
     public Expense() {}
 
     public Expense(String description, double amount, String category, LocalDate date) {
@@ -31,7 +31,7 @@ public class Expense {
         this.date = date;
     }
 
-    // Getters and Setters
+    // getters and setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -54,5 +54,4 @@ public class Expense {
     public void setUser(User user) {
         this.user = user;
     }
-
 }

@@ -17,7 +17,7 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    // Constructors
+    // constructors
     public User() {}
 
     public User(String username, String password, String email) {
@@ -45,7 +45,7 @@ public class User {
         this.securityAnswer = securityAnswer;
     }
 
-    // Getters and Setters
+    // getters and setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
